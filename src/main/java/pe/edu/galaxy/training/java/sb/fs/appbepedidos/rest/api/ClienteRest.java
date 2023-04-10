@@ -8,6 +8,7 @@ import pe.edu.galaxy.training.java.sb.fs.appbepedidos.dto.ClienteDTO;
 import pe.edu.galaxy.training.java.sb.fs.appbepedidos.service.ClienteService;
 
 import java.util.List;
+import java.util.Optional;
 
 import static java.util.Objects.isNull;
 import static pe.edu.galaxy.training.java.sb.fs.appbepedidos.rest.constants.APIConstants.API_CLIENTES;
@@ -37,6 +38,22 @@ public class ClienteRest {
             return ResponseEntity.internalServerError().build();
         }
     }
+    @GetMapping("/by-RUC")
+    public ResponseEntity<?> findByRuc(@RequestParam(name = "ruc", defaultValue = "")String ruc){
+        try {
+
+            Optional<ClienteDTO> optionalClienteDTO = clienteService.findByRuc(ruc);
+
+            if(isNull(optionalClienteDTO) || optionalClienteDTO.isEmpty()){
+                return ResponseEntity.noContent().build();
+            }
+            return ResponseEntity.ok(optionalClienteDTO);
+        }catch (Exception e){
+            log.error(e.getMessage());
+            return ResponseEntity.internalServerError().build();
+        }
+    }
+
 
     @PostMapping
     public ResponseEntity<?> save(@RequestBody ClienteDTO clienteDTO){

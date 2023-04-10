@@ -22,7 +22,7 @@ public class ProductoServiceImpl implements ProductoService{
     @Override
     public List<ProductoDTO> findByLike(ProductoDTO productoDTO) throws ServiceException {
         try {
-            return productoMapper.toDTO(productoRepository.findAll());
+            return productoMapper.toDTO(productoRepository.findByLikeNombre("%" + productoDTO.getNombre() + "%"));
         }catch (Exception e){
             throw new ServiceException(e);
         }

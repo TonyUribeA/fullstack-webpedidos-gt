@@ -53,4 +53,18 @@ public class ClienteServiceImpl implements ClienteService{
     public Boolean delete(ClienteDTO clienteDTO) throws ServiceException {
         return null;
     }
+
+    @Override
+    public Optional<ClienteDTO> findByRuc(String ruc) throws ServiceException {
+        try {
+            Optional<ClienteEntity> optionalClienteEntity = clienteRepository.findByRuc(ruc);
+            if(optionalClienteEntity.isPresent()) {
+                return Optional.ofNullable(clienteMapper.toDTO(optionalClienteEntity.get()));
+            }
+            return Optional.empty();
+
+        }catch (Exception e){
+            throw new ServiceException(e);
+        }
+    }
 }

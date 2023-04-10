@@ -38,6 +38,24 @@ public class ProductoRest {
         }
     }
 
+    @GetMapping("/by-nombre")
+    public ResponseEntity<?> findByLikeNombre(@RequestParam(name = "nombre", defaultValue = "")String nombre){
+        try {
+            ProductoDTO productoDTO = new ProductoDTO();
+            productoDTO.setNombre(nombre);
+
+            List<ProductoDTO> lstProductoDTO = productoService.findByLike(productoDTO);
+
+            if(isNull(lstProductoDTO) || lstProductoDTO.isEmpty()){
+                return ResponseEntity.noContent().build();
+            }
+            return ResponseEntity.ok(lstProductoDTO);
+        }catch (Exception e){
+            log.error(e.getMessage());
+            return ResponseEntity.internalServerError().build();
+        }
+    }
+
     @PostMapping
     public ResponseEntity<?> save(@RequestBody ProductoDTO productoDTO){
         try {
